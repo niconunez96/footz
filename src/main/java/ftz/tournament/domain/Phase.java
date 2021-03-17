@@ -1,4 +1,4 @@
-package ftz.domain;
+package ftz.tournament.domain;
 
 public enum Phase {
     SIXTEENTHS,

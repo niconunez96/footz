@@ -1,5 +1,6 @@
-package ftz.domain;
+package ftz.tournament.domain;
 
+import ftz.teams.domain.Team;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;

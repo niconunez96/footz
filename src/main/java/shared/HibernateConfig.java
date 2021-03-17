@@ -1,8 +1,6 @@
 package shared;
 
-import ftz.domain.Match;
-import ftz.domain.Team;
-import org.hibernate.SessionFactory;
+import ftz.teams.domain.Team;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -27,7 +25,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory(){
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-//        sessionFactory.setPackagesToScan("ftz.domain");
+//        sessionFactory.setPackagesToScan("ftz.tournament.domain");
         sessionFactory.setAnnotatedClasses(Team.class);
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;

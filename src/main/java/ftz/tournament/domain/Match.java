@@ -1,4 +1,6 @@
-package ftz.domain;
+package ftz.tournament.domain;
+
+import ftz.teams.domain.Team;
 
 import java.util.Date;
 

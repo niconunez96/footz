@@ -1,6 +1,8 @@
-package ftz.infrastructure;
+package ftz.tournament.infrastructure;
 
-import ftz.domain.Team;
+import ftz.teams.domain.Team;
+import ftz.teams.domain.TeamId;
+import ftz.teams.infrastructure.TeamMySQLRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ public class TestTeamRepository {
 
     @Test
     public void itShouldSaveTeamIntoDatabase(){
-        Team team = new Team("Test team");
+        Team team = new Team(new TeamId(), "Test team");
 
         teamRepository.store(team);
 

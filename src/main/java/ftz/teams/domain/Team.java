@@ -1,4 +1,4 @@
-package ftz.domain;
+package ftz.teams.domain;
 
 import lombok.ToString;
 
@@ -9,19 +9,21 @@ import javax.persistence.*;
 @ToString(exclude = "id")
 public class Team {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @EmbeddedId
+    private TeamId id;
 
     @Column
     private String name;
 
     public Team(){}
 
-    public Team(String name) {
+    public Team(TeamId id, String name) {
+
         this.name = name;
+        this.id = id;
     }
 
     public String name(){ return name; }
+
+    public TeamId id(){ return id; }
 }
