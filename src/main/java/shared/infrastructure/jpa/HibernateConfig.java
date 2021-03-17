@@ -1,4 +1,4 @@
-package shared;
+package shared.infrastructure.jpa;
 
 import ftz.teams.domain.Team;
 import org.springframework.context.annotation.Bean;

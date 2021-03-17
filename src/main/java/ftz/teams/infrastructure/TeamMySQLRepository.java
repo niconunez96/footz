@@ -3,7 +3,7 @@ package ftz.teams.infrastructure;
 import ftz.teams.domain.Team;
 import ftz.teams.domain.TeamRepository;
 import org.springframework.stereotype.Repository;
-import shared.JPARepository;
+import shared.infrastructure.jpa.JPARepository;
 
 import java.util.Optional;
 
