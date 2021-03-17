@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface TeamRepository {
 
-    Optional<Team> findOne(Long id);
+    Optional<Team> findOne(TeamId id);
 
     void store(Team team);
 }
