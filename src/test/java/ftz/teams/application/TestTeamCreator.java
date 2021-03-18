@@ -1,4 +1,4 @@
-package ftz.teams;
+package ftz.teams.application;
 
 import ftz.teams.application.DuplicateIdentificationsError;
 import ftz.teams.application.NewPlayer;
