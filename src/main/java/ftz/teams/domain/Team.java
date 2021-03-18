@@ -26,6 +26,11 @@ public class Team {
         this.teamPlayerInfos = teamPlayerInfos;
     }
 
+    public Team(TeamId id, String name){
+        this.id = id;
+        this.name = name;
+    }
+
     public String name(){ return name; }
 
     public TeamId id(){ return id; }
