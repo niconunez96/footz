@@ -1,6 +1,7 @@
 package ftz.tournament.domain;
 
 import ftz.teams.domain.Team;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestMatch {
 
     @Test
-    public void testMatchHasNotEndedWhenThereIsNoResultRecorded() {
+    public void itMatchHasNotEndedWhenThereIsNoResultRecorded() {
         Team team1 = new Team();
         Team team2 = new Team();
         Match match = new Match(new Date(), Phase.FINAL, team1, team2);
@@ -19,7 +20,7 @@ public class TestMatch {
     }
 
     @Test
-    public void testMatchHasEndedWhenThereIsAResult() {
+    public void itMatchHasEndedWhenThereIsAResult() {
         Team team1 = new Team();
         Team team2 = new Team();
         Match match = new Match(new Date(), Phase.FINAL, team1, team2);
@@ -30,7 +31,7 @@ public class TestMatch {
     }
 
     @Test
-    public void testShouldRaiseMatchDidNotEndedWhenThereIsNoWinner(){
+    public void itShouldRaiseMatchDidNotEndedWhenThereIsNoWinner(){
         Team team1 = new Team();
         Team team2 = new Team();
         Match match = new Match(new Date(), Phase.FINAL, team1, team2);
@@ -39,7 +40,7 @@ public class TestMatch {
     }
 
     @Test
-    public void testShouldReturnLocalTeamWhenLocalHasMoreGoalsThanVisitor(){
+    public void itShouldReturnLocalTeamWhenLocalHasMoreGoalsThanVisitor(){
         Team team1 = new Team();
         Team team2 = new Team();
         Match match = new Match(new Date(), Phase.FINAL, team1, team2);

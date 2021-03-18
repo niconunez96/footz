@@ -15,5 +15,4 @@ public class PlayerId implements Serializable {
         this.id = UUID.randomUUID();
     }
 
-    public UUID getValue(){ return id; }
 }

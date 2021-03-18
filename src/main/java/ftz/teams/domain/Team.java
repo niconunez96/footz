@@ -1,13 +1,10 @@
 package ftz.teams.domain;
 
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "teams")
-@ToString(exclude = "id")
 public class Team {
 
     @EmbeddedId
