@@ -1,4 +1,4 @@
-package shared.infrastructure.email;
+package config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,25 +8,24 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-public class SMPTConfiguration {
+public class SMTPConfigTesting {
 
+    private Properties properties(){
+        Properties properties = new Properties();
+        properties.setProperty("mail.transport.protocol","smtp");
+        properties.setProperty("mail.smtp.auth","true");
+        properties.setProperty("mail.smtp.starttls.enable","true");
+        properties.setProperty("mail.debug","false");
+        return properties;
+    }
     @Bean
-    public JavaMailSender javaMailSender(){
+    public JavaMailSender mailSender(){
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("localhost");
         mailSender.setPort(3025);
-
         mailSender.setUsername("test");
         mailSender.setPassword("test");
-
-        Properties props = new Properties();
-        props.setProperty("mail.transport.protocol", "smtp");
-        props.setProperty("mail.smtp.auth", "true");
-        props.setProperty("mail.smtp.starttls.enable", "true");
-        props.setProperty("mail.debug", "true");
-
-        mailSender.setJavaMailProperties(props);
-
+        mailSender.setJavaMailProperties(properties());
         return mailSender;
     }
 }
