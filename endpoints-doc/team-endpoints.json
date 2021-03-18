@@ -1,0 +1,19 @@
+// CREATE a new team
+// POST /api/v1/teams/
+// Request
+{
+  "team": {
+    "name": "Example name",
+    "players": [
+      {
+        "email": "example@mail.com",
+        "identification": "1234",
+        "name": "john",
+        "shirtNumber": 5
+      }
+    ]
+  }
+}
+// Response
+
+// Status: 201, URI: /api/v1/teams/:id/
