@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import shared.infrastructure.jpa.JPARepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -16,6 +17,11 @@ import java.util.Optional;
 
 @Repository
 public class PlayerMySQLRepository extends JPARepository<Player, PlayerId> implements PlayerRepository {
+
+    public PlayerMySQLRepository(EntityManagerFactory entityManagerFactory) {
+        super(entityManagerFactory);
+    }
+
     @Override
     public Optional<Player> findOne(String identification, String email) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();

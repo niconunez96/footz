@@ -6,10 +6,15 @@ import ftz.teams.domain.TeamRepository;
 import org.springframework.stereotype.Repository;
 import shared.infrastructure.jpa.JPARepository;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.Optional;
 
 @Repository
-public class TeamMySQLRepository extends JPARepository<Team, TeamId> implements TeamRepository{
+public class TeamMySQLRepository extends JPARepository<Team, TeamId> implements TeamRepository {
+
+    public TeamMySQLRepository(EntityManagerFactory entityManagerFactory) {
+        super(entityManagerFactory);
+    }
 
     @Override
     public Optional<Team> findOne(TeamId id) {

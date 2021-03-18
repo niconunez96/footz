@@ -14,8 +14,11 @@ import java.util.Optional;
 
 public abstract class JPARepository<T, ID> {
 
-    @Autowired
     protected EntityManagerFactory entityManagerFactory;
+
+    public JPARepository(EntityManagerFactory entityManagerFactory){
+        this.entityManagerFactory = entityManagerFactory;
+    }
 
     protected Optional<T> findById(ID id){
         EntityManager entityManager = entityManagerFactory.createEntityManager();

@@ -1,8 +1,9 @@
-package ftz.tournament.infrastructure;
+package ftz.teams.infrastructure;
 
+import config.DatabaseConfigTesting;
+import config.RepositoryConfigTesting;
 import ftz.teams.domain.Player;
 import ftz.teams.domain.PlayerId;
-import ftz.teams.infrastructure.PlayerMySQLRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@ContextConfiguration(classes = FtzApplication.class)
+@ContextConfiguration(classes = {DatabaseConfigTesting.class, RepositoryConfigTesting.class})
 public class TestPlayerMySQLRepository {
 
     @Autowired
