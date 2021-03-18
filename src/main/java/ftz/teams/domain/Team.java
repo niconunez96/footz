@@ -29,4 +29,6 @@ public class Team {
     public String name(){ return name; }
 
     public TeamId id(){ return id; }
+
+    public Set<TeamPlayerInfo> teamPlayerInfos(){ return teamPlayerInfos; }
 }
