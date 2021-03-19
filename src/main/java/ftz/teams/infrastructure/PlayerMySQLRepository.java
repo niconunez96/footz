@@ -20,7 +20,7 @@ public class PlayerMySQLRepository extends JPARepository<Player, PlayerId> imple
     public List<Player> findByTeamId(TeamId id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Team team = entityManager.find(Team.class, id);
-        return new ArrayList<>(team.teamPlayerInfos());
+        return new ArrayList<>(team.players());
     }
 
     @Override

@@ -32,5 +32,5 @@ public class Team {
 
     public TeamId id(){ return id; }
 
-    public Set<Player> teamPlayerInfos(){ return players; }
+    public Set<Player> players(){ return players; }
 }

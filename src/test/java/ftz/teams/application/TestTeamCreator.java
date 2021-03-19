@@ -1,19 +1,16 @@
 package ftz.teams.application;
 
 import ftz.teams.domain.*;
-import ftz.teams.infrastructure.PlayerMetadataMySQLRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import server.FtzApplication;
 import shared.domain.EventBus;
 import shared.domain.validator.UUIDValidator;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,10 +25,6 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(classes = FtzApplication.class)
 public class TestTeamCreator {
 
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-    @Autowired
-    private PlayerMetadataMySQLRepository playerRepository;
     @Mock
     private TeamRepository mockTeamRepository;
     @Mock
@@ -82,7 +75,6 @@ public class TestTeamCreator {
     @Test
     public void itShouldNotDuplicatePlayersThatAlreadyExistWithSameIdentificationAndEmail(){
         PlayerMetadata existentPlayerMetadata = new PlayerMetadata("john@mail.com", "1234", "john");
-        playerRepository.store(existentPlayerMetadata);
         TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
         List<NewPlayer> newPlayers = new ArrayList<>(){{
             add(new NewPlayer("1234", "john", 10, "john@mail.com"));
@@ -108,6 +100,6 @@ public class TestTeamCreator {
 
         then(mockTeamRepository).should().store(teamArgumentCaptor.capture());
         Team teamStored = teamArgumentCaptor.getValue();
-        assertThat(teamStored.teamPlayerInfos().size()).isEqualTo(2);
+        assertThat(teamStored.players().size()).isEqualTo(2);
     }
 }

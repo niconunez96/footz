@@ -1,6 +1,5 @@
 package ftz.teams.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
@@ -28,6 +27,7 @@ public class PlayerMetadata {
         this.name = name;
     }
 
+    public Long id(){ return id; }
     public String email() {
         return email;
     }

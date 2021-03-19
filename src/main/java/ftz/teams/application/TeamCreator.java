@@ -26,8 +26,7 @@ public class TeamCreator {
         Optional<PlayerMetadata> player = playerMetadataRepository.findOne(identification, email);
         return player.orElseGet(() -> {
             PlayerMetadata newPlayerMetadata = new PlayerMetadata(email, identification, name);
-            playerMetadataRepository.store(newPlayerMetadata);
-            return newPlayerMetadata;
+            return playerMetadataRepository.store(newPlayerMetadata);
         });
     }
 

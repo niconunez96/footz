@@ -20,9 +20,9 @@ public class TestTeamMySQLRepository {
     @Autowired
     TeamMySQLRepository teamRepository;
     @Autowired
-    PlayerMetadataMySQLRepository playerRepository;
+    PlayerMetadataMySQLRepository playerMetadataRepository;
     @Autowired
-    PlayerMySQLRepository teamPlayerInfoMySQLRepository;
+    PlayerMySQLRepository playerRepository;
 
     @Test
     public void itShouldSaveTeamIntoDatabase() {
@@ -44,7 +44,7 @@ public class TestTeamMySQLRepository {
 
     private PlayerMetadata givenAPlayer() {
         PlayerMetadata playerMetadata = new PlayerMetadata("john@mail.com", "12345", "John");
-        playerRepository.store(playerMetadata);
+        playerMetadataRepository.store(playerMetadata);
         return playerMetadata;
     }
 
@@ -60,7 +60,7 @@ public class TestTeamMySQLRepository {
         Team team = new Team(id, "Test team", players);
 
         teamRepository.store(team);
-        List<Player> playerInfosSaved = teamPlayerInfoMySQLRepository.findByTeamId(id);
+        List<Player> playerInfosSaved = playerRepository.findByTeamId(id);
         assertThat(playerInfosSaved.size()).isEqualTo(2);
     }
 }

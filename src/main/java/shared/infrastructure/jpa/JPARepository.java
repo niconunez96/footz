@@ -16,17 +16,17 @@ public abstract class JPARepository<T, ID> {
 
     protected EntityManagerFactory entityManagerFactory;
 
-    public JPARepository(EntityManagerFactory entityManagerFactory){
+    public JPARepository(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
-    protected Optional<T> findById(ID id){
+    protected Optional<T> findById(ID id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         T entity = entityManager.find(getEntityClass(), id);
         return Optional.ofNullable(entity);
     }
 
-    protected List<T> findAll(){
+    protected List<T> findAll() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         CriteriaBuilder criteria = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = criteria.createQuery(getEntityClass());
@@ -35,16 +35,33 @@ public abstract class JPARepository<T, ID> {
     }
 
     @Transactional
-    protected void persist(T entity){
+    protected void persist(T entity) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-        try{
+        try {
             transaction.begin();
             entityManager.persist(entity);
             transaction.commit();
-        }catch(PersistenceException exc){
+        } catch (PersistenceException exc) {
             transaction.rollback();
-        }finally {
+            throw new RuntimeException();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    protected T save(T entity) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            entityManager.persist(entity);
+            transaction.commit();
+            return entity;
+        } catch (PersistenceException exc) {
+            transaction.rollback();
+            throw new RuntimeException();
+        } finally {
             entityManager.close();
         }
     }

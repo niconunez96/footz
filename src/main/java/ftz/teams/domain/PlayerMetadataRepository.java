@@ -8,5 +8,5 @@ public interface PlayerMetadataRepository {
 
     Optional<PlayerMetadata> findOne(Long id);
 
-    void store(PlayerMetadata playerMetadata);
+    PlayerMetadata store(PlayerMetadata playerMetadata);
 }

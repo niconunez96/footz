@@ -46,8 +46,8 @@ public class PlayerMetadataMySQLRepository extends JPARepository<PlayerMetadata,
     }
 
     @Override
-    public void store(PlayerMetadata playerMetadata) {
-        this.persist(playerMetadata);
+    public PlayerMetadata store(PlayerMetadata playerMetadata) {
+        return this.save(playerMetadata);
     }
 
     @Override
