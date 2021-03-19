@@ -31,26 +31,26 @@ public class TestTeamCreationEmailNotificator {
 
     public List<TeamPlayerInfo> threePlayersWithOneWithoutEmail() {
         TeamPlayerInfo teamPlayerInfo1 = new TeamPlayerInfo(
-                new Player(new PlayerId(), "test1@test.com", "1", "hon"), 10
+                new PlayerMetadata("test1@test.com", "1", "hon"), 10
         );
         TeamPlayerInfo teamPlayerInfo2 = new TeamPlayerInfo(
-                new Player(new PlayerId(), "", "2", "noh"), 5
+                new PlayerMetadata("", "2", "noh"), 5
         );
         TeamPlayerInfo teamPlayerInfo3 = new TeamPlayerInfo(
-                new Player(new PlayerId(), "test2@test.com", "3", "john"), 7
+                new PlayerMetadata("test2@test.com", "3", "john"), 7
         );
         return Arrays.asList(teamPlayerInfo1, teamPlayerInfo2, teamPlayerInfo3);
     }
 
     public List<TeamPlayerInfo> threePlayers() {
         TeamPlayerInfo teamPlayerInfo1 = new TeamPlayerInfo(
-                new Player(new PlayerId(), "test1@test.com", "1", "hon"), 10
+                new PlayerMetadata("test1@test.com", "1", "hon"), 10
         );
         TeamPlayerInfo teamPlayerInfo2 = new TeamPlayerInfo(
-                new Player(new PlayerId(), "test2@test.com", "2", "noh"), 5
+                new PlayerMetadata("test2@test.com", "2", "noh"), 5
         );
         TeamPlayerInfo teamPlayerInfo3 = new TeamPlayerInfo(
-                new Player(new PlayerId(), "test3@test.com", "3", "john"), 7
+                new PlayerMetadata("test3@test.com", "3", "john"), 7
         );
         return Arrays.asList(teamPlayerInfo1, teamPlayerInfo2, teamPlayerInfo3);
     }

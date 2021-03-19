@@ -13,27 +13,27 @@ import java.util.stream.Collectors;
 public class TeamCreator {
 
     private TeamRepository teamRepository;
-    private PlayerRepository playerRepository;
+    private PlayerMetadataRepository playerMetadataRepository;
     private EventBus eventBus;
 
-    public TeamCreator(TeamRepository teamRepository, PlayerRepository playerRepository, EventBus eventBus) {
+    public TeamCreator(TeamRepository teamRepository, PlayerMetadataRepository playerMetadataRepository, EventBus eventBus) {
         this.teamRepository = teamRepository;
-        this.playerRepository = playerRepository;
+        this.playerMetadataRepository = playerMetadataRepository;
         this.eventBus = eventBus;
     }
 
-    private Player obtainPlayer(String email, String identification, String name) {
-        Optional<Player> player = playerRepository.findOne(identification, email);
+    private PlayerMetadata obtainPlayer(String email, String identification, String name) {
+        Optional<PlayerMetadata> player = playerMetadataRepository.findOne(identification, email);
         return player.orElseGet(() -> {
-            Player newPlayer = new Player(new PlayerId(), email, identification, name);
-            playerRepository.store(newPlayer);
-            return newPlayer;
+            PlayerMetadata newPlayerMetadata = new PlayerMetadata(email, identification, name);
+            playerMetadataRepository.store(newPlayerMetadata);
+            return newPlayerMetadata;
         });
     }
 
     private TeamPlayerInfo createTeamPlayerInfo(NewPlayer newPlayer) {
-        Player player = this.obtainPlayer(newPlayer.getEmail(), newPlayer.getIdentification(), newPlayer.getName());
-        return new TeamPlayerInfo(player, newPlayer.getShirtNumber());
+        PlayerMetadata playerMetadata = this.obtainPlayer(newPlayer.getEmail(), newPlayer.getIdentification(), newPlayer.getName());
+        return new TeamPlayerInfo(playerMetadata, newPlayer.getShirtNumber());
     }
 
     public void validateIdentifications(List<NewPlayer> newPlayers) {

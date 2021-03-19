@@ -1,11 +1,7 @@
 package ftz.teams.application;
 
-import ftz.teams.application.DuplicateIdentificationsError;
-import ftz.teams.application.NewPlayer;
-import ftz.teams.application.TeamCreator;
-import ftz.teams.application.TeamResponse;
 import ftz.teams.domain.*;
-import ftz.teams.infrastructure.PlayerMySQLRepository;
+import ftz.teams.infrastructure.PlayerMetadataMySQLRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -35,11 +31,11 @@ public class TestTeamCreator {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
     @Autowired
-    private PlayerMySQLRepository playerRepository;
+    private PlayerMetadataMySQLRepository playerRepository;
     @Mock
     private TeamRepository mockTeamRepository;
     @Mock
-    private PlayerRepository mockPlayerRepository;
+    private PlayerMetadataRepository mockPlayerMetadataRepository;
     @Mock
     private EventBus mockEventBus;
     @Captor
@@ -49,7 +45,7 @@ public class TestTeamCreator {
 
     @Test
     public void itShouldStoreNewTeamWithSpecifiedName(){
-        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerRepository, mockEventBus);
+        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
 
         TeamResponse response = creator.createTeam("New team", new ArrayList<>());
 
@@ -61,7 +57,7 @@ public class TestTeamCreator {
 
     @Test
     public void itShouldPublishTeamCreatedEvent(){
-        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerRepository, mockEventBus);
+        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
 
         creator.createTeam("Test team", new ArrayList<>());
 
@@ -73,7 +69,7 @@ public class TestTeamCreator {
 
     @Test
     public void itShouldRaiseDuplicateIdentificationsError(){
-        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerRepository, mockEventBus);
+        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
         List<NewPlayer> newPlayers = new ArrayList<>(){{
             add(new NewPlayer("12345", "john", 10, "john@mail.com"));
             add(new NewPlayer("12345", "cristiano", 7, "cr7@mail.com"));
@@ -85,24 +81,24 @@ public class TestTeamCreator {
 
     @Test
     public void itShouldNotDuplicatePlayersThatAlreadyExistWithSameIdentificationAndEmail(){
-        Player existentPlayer = new Player(new PlayerId(), "john@mail.com", "1234", "john");
-        playerRepository.store(existentPlayer);
-        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerRepository, mockEventBus);
+        PlayerMetadata existentPlayerMetadata = new PlayerMetadata("john@mail.com", "1234", "john");
+        playerRepository.store(existentPlayerMetadata);
+        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
         List<NewPlayer> newPlayers = new ArrayList<>(){{
             add(new NewPlayer("1234", "john", 10, "john@mail.com"));
             add(new NewPlayer("1235", "cristiano", 7, "cr7@mail.com"));
         }};
 
-        given(mockPlayerRepository.findOne("1234", "john@mail.com"))
-                .willReturn(Optional.of(existentPlayer));
+        given(mockPlayerMetadataRepository.findOne("1234", "john@mail.com"))
+                .willReturn(Optional.of(existentPlayerMetadata));
         creator.createTeam("Test team", newPlayers);
 
-        verify(mockPlayerRepository, times(1)).store(any(Player.class));
+        verify(mockPlayerMetadataRepository, times(1)).store(any(PlayerMetadata.class));
     }
 
     @Test
     public void itShouldCreateTeamPlayerInfoForEachNewPlayer(){
-        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerRepository, mockEventBus);
+        TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
         List<NewPlayer> newPlayers = new ArrayList<>(){{
             add(new NewPlayer("12346", "john", 10, "john@mail.com"));
             add(new NewPlayer("12345", "cristiano", 7, "cr7@mail.com"));

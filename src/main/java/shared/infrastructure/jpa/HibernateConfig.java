@@ -1,8 +1,5 @@
 package shared.infrastructure.jpa;
 
-import ftz.teams.domain.Player;
-import ftz.teams.domain.Team;
-import ftz.teams.domain.TeamPlayerInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;

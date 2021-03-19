@@ -15,19 +15,19 @@ import java.util.Set;
 
 @SpringBootTest
 @ContextConfiguration(classes = {DatabaseConfigTesting.class, RepositoryConfigTesting.class})
-public class TestTeamPlayerInfoMySQLRepository {
+public class TestTeamPlayerMetadataInfoMySQLRepository {
 
     @Autowired
     TeamPlayerInfoMySQLRepository teamPlayerInfoMySQLRepository;
     @Autowired
-    PlayerRepository playerRepository;
+    PlayerMetadataRepository playerMetadataRepository;
     @Autowired
     TeamRepository teamRepository;
 
-    private Player givenAPlayer(){
-        Player player = new Player(new PlayerId(), "test@mail.com", "1", "john");
-        playerRepository.store(player);
-        return player;
+    private PlayerMetadata givenAPlayer(){
+        PlayerMetadata playerMetadata = new PlayerMetadata("test@mail.com", "1", "john");
+        playerMetadataRepository.store(playerMetadata);
+        return playerMetadata;
     }
 
     @Test

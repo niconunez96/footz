@@ -11,19 +11,19 @@ public class TeamPlayerInfo {
     private Long id;
     @OneToOne
     @JoinColumn(name = "player_id")
-    private Player player;
+    private PlayerMetadata playerMetadata;
     @Column
     private Integer shirtNumber;
 
     public TeamPlayerInfo() {
     }
 
-    public TeamPlayerInfo(Player player, Integer shirtNumber) {
-        this.player = player;
+    public TeamPlayerInfo(PlayerMetadata playerMetadata, Integer shirtNumber) {
+        this.playerMetadata = playerMetadata;
         this.shirtNumber = shirtNumber;
     }
 
     public String email() {
-        return player.email();
+        return playerMetadata.email();
     }
 }

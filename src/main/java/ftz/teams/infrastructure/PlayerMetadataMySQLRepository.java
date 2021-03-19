@@ -1,8 +1,8 @@
 package ftz.teams.infrastructure;
 
-import ftz.teams.domain.Player;
+import ftz.teams.domain.PlayerMetadata;
 import ftz.teams.domain.PlayerId;
-import ftz.teams.domain.PlayerRepository;
+import ftz.teams.domain.PlayerMetadataRepository;
 import org.springframework.stereotype.Repository;
 import shared.infrastructure.jpa.JPARepository;
 
@@ -16,18 +16,18 @@ import javax.persistence.criteria.Root;
 import java.util.Optional;
 
 @Repository
-public class PlayerMySQLRepository extends JPARepository<Player, PlayerId> implements PlayerRepository {
+public class PlayerMetadataMySQLRepository extends JPARepository<PlayerMetadata, Long> implements PlayerMetadataRepository {
 
-    public PlayerMySQLRepository(EntityManagerFactory entityManagerFactory) {
+    public PlayerMetadataMySQLRepository(EntityManagerFactory entityManagerFactory) {
         super(entityManagerFactory);
     }
 
     @Override
-    public Optional<Player> findOne(String identification, String email) {
+    public Optional<PlayerMetadata> findOne(String identification, String email) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         CriteriaBuilder criteria = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Player> query = criteria.createQuery(Player.class);
-        Root<Player> table = query.from(Player.class);
+        CriteriaQuery<PlayerMetadata> query = criteria.createQuery(PlayerMetadata.class);
+        Root<PlayerMetadata> table = query.from(PlayerMetadata.class);
         Predicate predicate = criteria.and(
                 criteria.equal(table.get("identification"), identification),
                 criteria.equal(table.get("email"), email)
@@ -41,17 +41,17 @@ public class PlayerMySQLRepository extends JPARepository<Player, PlayerId> imple
     }
 
     @Override
-    public Optional<Player> findOne(PlayerId id) {
+    public Optional<PlayerMetadata> findOne(Long id) {
         return this.findById(id);
     }
 
     @Override
-    public void store(Player player) {
-        this.persist(player);
+    public void store(PlayerMetadata playerMetadata) {
+        this.persist(playerMetadata);
     }
 
     @Override
-    protected Class<Player> getEntityClass() {
-        return Player.class;
+    protected Class<PlayerMetadata> getEntityClass() {
+        return PlayerMetadata.class;
     }
 }
