@@ -1,11 +1,11 @@
 package config;
 
 import ftz.teams.domain.PlayerMetadataRepository;
-import ftz.teams.domain.TeamPlayerInfoRepository;
+import ftz.teams.domain.PlayerRepository;
 import ftz.teams.domain.TeamRepository;
 import ftz.teams.infrastructure.PlayerMetadataMySQLRepository;
 import ftz.teams.infrastructure.TeamMySQLRepository;
-import ftz.teams.infrastructure.TeamPlayerInfoMySQLRepository;
+import ftz.teams.infrastructure.PlayerMySQLRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class RepositoryConfigTesting {
     }
 
     @Bean
-    public TeamPlayerInfoRepository teamPlayerInfoRepository(){
-        return new TeamPlayerInfoMySQLRepository(entityManagerFactory);
+    public PlayerRepository teamPlayerInfoRepository(){
+        return new PlayerMySQLRepository(entityManagerFactory);
     }
 }

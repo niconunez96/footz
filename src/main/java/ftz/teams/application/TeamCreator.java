@@ -31,9 +31,9 @@ public class TeamCreator {
         });
     }
 
-    private TeamPlayerInfo createTeamPlayerInfo(NewPlayer newPlayer) {
+    private Player createNewPlayer(NewPlayer newPlayer) {
         PlayerMetadata playerMetadata = this.obtainPlayer(newPlayer.getEmail(), newPlayer.getIdentification(), newPlayer.getName());
-        return new TeamPlayerInfo(playerMetadata, newPlayer.getShirtNumber());
+        return new Player(new PlayerId(), playerMetadata, newPlayer.getShirtNumber());
     }
 
     public void validateIdentifications(List<NewPlayer> newPlayers) {
@@ -44,11 +44,11 @@ public class TeamCreator {
 
     public TeamResponse createTeam(String name, List<NewPlayer> newPlayers) {
         validateIdentifications(newPlayers);
-        Set<TeamPlayerInfo> teamPlayerInfos = newPlayers.stream()
-                .map(this::createTeamPlayerInfo).collect(Collectors.toSet());
+        Set<Player> players = newPlayers.stream()
+                .map(this::createNewPlayer).collect(Collectors.toSet());
 
         TeamId teamId = new TeamId();
-        Team newTeam = new Team(teamId, name, teamPlayerInfos);
+        Team newTeam = new Team(teamId, name, players);
         teamRepository.store(newTeam);
 
         eventBus.publish(new TeamCreatedEvent(teamId.getValue().toString(), name));

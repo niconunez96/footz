@@ -25,43 +25,43 @@ public class TestTeamCreationEmailNotificator {
     @Mock
     EmailSender emailSender;
     @Mock
-    TeamPlayerInfoRepository teamPlayerInfoRepository;
+    PlayerRepository playerRepository;
     @Captor
     ArgumentCaptor<List<EmailInfo>> emailInfosCaptor;
 
-    public List<TeamPlayerInfo> threePlayersWithOneWithoutEmail() {
-        TeamPlayerInfo teamPlayerInfo1 = new TeamPlayerInfo(
-                new PlayerMetadata("test1@test.com", "1", "hon"), 10
+    public List<Player> threePlayersWithOneWithoutEmail() {
+        Player player1 = new Player(
+                new PlayerId(), new PlayerMetadata("test1@test.com", "1", "hon"), 10
         );
-        TeamPlayerInfo teamPlayerInfo2 = new TeamPlayerInfo(
-                new PlayerMetadata("", "2", "noh"), 5
+        Player player2 = new Player(
+                new PlayerId(), new PlayerMetadata("", "2", "noh"), 5
         );
-        TeamPlayerInfo teamPlayerInfo3 = new TeamPlayerInfo(
-                new PlayerMetadata("test2@test.com", "3", "john"), 7
+        Player player3 = new Player(
+                new PlayerId(), new PlayerMetadata("test2@test.com", "3", "john"), 7
         );
-        return Arrays.asList(teamPlayerInfo1, teamPlayerInfo2, teamPlayerInfo3);
+        return Arrays.asList(player1, player2, player3);
     }
 
-    public List<TeamPlayerInfo> threePlayers() {
-        TeamPlayerInfo teamPlayerInfo1 = new TeamPlayerInfo(
-                new PlayerMetadata("test1@test.com", "1", "hon"), 10
+    public List<Player> threePlayers() {
+        Player player1 = new Player(
+                new PlayerId(), new PlayerMetadata("test1@test.com", "1", "hon"), 10
         );
-        TeamPlayerInfo teamPlayerInfo2 = new TeamPlayerInfo(
-                new PlayerMetadata("test2@test.com", "2", "noh"), 5
+        Player player2 = new Player(
+                new PlayerId(), new PlayerMetadata("test2@test.com", "2", "noh"), 5
         );
-        TeamPlayerInfo teamPlayerInfo3 = new TeamPlayerInfo(
-                new PlayerMetadata("test3@test.com", "3", "john"), 7
+        Player player3 = new Player(
+                new PlayerId(), new PlayerMetadata("test3@test.com", "3", "john"), 7
         );
-        return Arrays.asList(teamPlayerInfo1, teamPlayerInfo2, teamPlayerInfo3);
+        return Arrays.asList(player1, player2, player3);
     }
 
     @Test
     public void itShouldSendEmailNotificationForEachPlayerInTheTeam() {
-        TeamCreationEmailNotificator notificator = new TeamCreationEmailNotificator(teamPlayerInfoRepository, emailSender);
+        TeamCreationEmailNotificator notificator = new TeamCreationEmailNotificator(playerRepository, emailSender);
         Team team = new Team(new TeamId(), "New team");
         TeamCreatedEvent teamCreatedEvent = new TeamCreatedEvent(team.id().toString(), team.name());
 
-        given(teamPlayerInfoRepository.findByTeamId(team.id()))
+        given(playerRepository.findByTeamId(team.id()))
                 .willReturn(threePlayers());
 
         notificator.sendEmailNotification(teamCreatedEvent);
@@ -73,11 +73,11 @@ public class TestTeamCreationEmailNotificator {
 
     @Test
     public void itShouldNotSendEmailForPlayerThatDoesNotHaveEmail() {
-        TeamCreationEmailNotificator notificator = new TeamCreationEmailNotificator(teamPlayerInfoRepository, emailSender);
+        TeamCreationEmailNotificator notificator = new TeamCreationEmailNotificator(playerRepository, emailSender);
         Team team = new Team(new TeamId(), "New team");
         TeamCreatedEvent teamCreatedEvent = new TeamCreatedEvent(team.id().toString(), team.name());
 
-        given(teamPlayerInfoRepository.findByTeamId(team.id()))
+        given(playerRepository.findByTeamId(team.id()))
                 .willReturn(threePlayersWithOneWithoutEmail());
 
         notificator.sendEmailNotification(teamCreatedEvent);

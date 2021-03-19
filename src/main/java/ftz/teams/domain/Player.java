@@ -3,22 +3,22 @@ package ftz.teams.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "team_player_infos")
-public class TeamPlayerInfo {
+@Table(name = "players")
+public class Player {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-    @OneToOne
-    @JoinColumn(name = "player_id")
+    @EmbeddedId
+    private PlayerId id;
+    @ManyToOne
+    @JoinColumn(name = "player_metadata_id")
     private PlayerMetadata playerMetadata;
     @Column
     private Integer shirtNumber;
 
-    public TeamPlayerInfo() {
+    public Player() {
     }
 
-    public TeamPlayerInfo(PlayerMetadata playerMetadata, Integer shirtNumber) {
+    public Player(PlayerId id, PlayerMetadata playerMetadata, Integer shirtNumber) {
+        this.id = id;
         this.playerMetadata = playerMetadata;
         this.shirtNumber = shirtNumber;
     }

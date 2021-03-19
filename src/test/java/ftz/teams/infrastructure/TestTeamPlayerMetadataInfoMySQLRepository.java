@@ -4,11 +4,13 @@ import config.DatabaseConfigTesting;
 import config.RepositoryConfigTesting;
 import ftz.teams.domain.*;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,11 +20,20 @@ import java.util.Set;
 public class TestTeamPlayerMetadataInfoMySQLRepository {
 
     @Autowired
-    TeamPlayerInfoMySQLRepository teamPlayerInfoMySQLRepository;
+    PlayerMySQLRepository teamPlayerInfoMySQLRepository;
     @Autowired
     PlayerMetadataRepository playerMetadataRepository;
     @Autowired
     TeamRepository teamRepository;
+    @Autowired
+    EntityManagerFactory entityManagerFactory;
+
+    @Before
+    public void setUp(){
+        entityManagerFactory.createEntityManager()
+                .createNativeQuery("DELETE FROM players_metadata")
+                .executeUpdate();
+    }
 
     private PlayerMetadata givenAPlayer(){
         PlayerMetadata playerMetadata = new PlayerMetadata("test@mail.com", "1", "john");
@@ -32,17 +43,17 @@ public class TestTeamPlayerMetadataInfoMySQLRepository {
 
     @Test
     public void itShouldReturnTeamPlayerInfosRelatedWithTeamIdProvided(){
-        Set<TeamPlayerInfo> teamPlayerInfos = new HashSet<>(){{
-            add(new TeamPlayerInfo(givenAPlayer(), 10));
-            add(new TeamPlayerInfo(givenAPlayer(), 2));
-            add(new TeamPlayerInfo(givenAPlayer(), 3));
+        Set<Player> players = new HashSet<>(){{
+            add(new Player(new PlayerId(), givenAPlayer(), 10));
+            add(new Player(new PlayerId(), givenAPlayer(), 2));
+            add(new Player(new PlayerId(), givenAPlayer(), 3));
         }};
         TeamId teamId = new TeamId();
-        Team team = new Team(teamId, "Test team", teamPlayerInfos);
+        Team team = new Team(teamId, "Test team", players);
         teamRepository.store(team);
 
-        List<TeamPlayerInfo> teamPlayerInfoSaved = teamPlayerInfoMySQLRepository.findByTeamId(teamId);
+        List<Player> playerSaved = teamPlayerInfoMySQLRepository.findByTeamId(teamId);
 
-        Assertions.assertThat(teamPlayerInfoSaved.size()).isEqualTo(3);
+        Assertions.assertThat(playerSaved.size()).isEqualTo(3);
     }
 }

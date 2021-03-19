@@ -13,14 +13,14 @@ public class Team {
     private String name;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
-    private Set<TeamPlayerInfo> teamPlayerInfos;
+    private Set<Player> players;
 
     public Team(){}
 
-    public Team(TeamId id, String name, Set<TeamPlayerInfo> teamPlayerInfos) {
+    public Team(TeamId id, String name, Set<Player> players) {
         this.id = id;
         this.name = name;
-        this.teamPlayerInfos = teamPlayerInfos;
+        this.players = players;
     }
 
     public Team(TeamId id, String name){
@@ -32,5 +32,5 @@ public class Team {
 
     public TeamId id(){ return id; }
 
-    public Set<TeamPlayerInfo> teamPlayerInfos(){ return teamPlayerInfos; }
+    public Set<Player> teamPlayerInfos(){ return players; }
 }

@@ -2,10 +2,7 @@ package ftz.teams.infrastructure;
 
 import config.DatabaseConfigTesting;
 import config.RepositoryConfigTesting;
-import ftz.teams.domain.PlayerMetadata;
-import ftz.teams.domain.Team;
-import ftz.teams.domain.TeamId;
-import ftz.teams.domain.TeamPlayerInfo;
+import ftz.teams.domain.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +22,7 @@ public class TestTeamMySQLRepository {
     @Autowired
     PlayerMetadataMySQLRepository playerRepository;
     @Autowired
-    TeamPlayerInfoMySQLRepository teamPlayerInfoMySQLRepository;
+    PlayerMySQLRepository teamPlayerInfoMySQLRepository;
 
     @Test
     public void itShouldSaveTeamIntoDatabase() {
@@ -55,15 +52,15 @@ public class TestTeamMySQLRepository {
     public void itShouldStoreTeamPlayerInfosWithTeam() {
         PlayerMetadata playerMetadata = givenAPlayer();
 
-        Set<TeamPlayerInfo> teamPlayerInfos = new HashSet<>() {{
-            add(new TeamPlayerInfo(playerMetadata, 1));
-            add(new TeamPlayerInfo(playerMetadata, 10));
+        Set<Player> players = new HashSet<>() {{
+            add(new Player(new PlayerId(), playerMetadata, 1));
+            add(new Player(new PlayerId(), playerMetadata, 10));
         }};
         TeamId id = new TeamId();
-        Team team = new Team(id, "Test team", teamPlayerInfos);
+        Team team = new Team(id, "Test team", players);
 
         teamRepository.store(team);
-        List<TeamPlayerInfo> teamPlayerInfosSaved = teamPlayerInfoMySQLRepository.findByTeamId(id);
-        assertThat(teamPlayerInfosSaved.size()).isEqualTo(2);
+        List<Player> playerInfosSaved = teamPlayerInfoMySQLRepository.findByTeamId(id);
+        assertThat(playerInfosSaved.size()).isEqualTo(2);
     }
 }
