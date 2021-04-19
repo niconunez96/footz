@@ -3,11 +3,6 @@ package ftz.teams.application;
 import ftz.teams.domain.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import server.FtzApplication;
 import shared.domain.EventBus;
 import shared.domain.validator.UUIDValidator;
 
@@ -21,23 +16,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@ContextConfiguration(classes = FtzApplication.class)
 public class TestTeamCreator {
 
-    @Mock
-    private TeamRepository mockTeamRepository;
-    @Mock
-    private PlayerMetadataRepository mockPlayerMetadataRepository;
-    @Mock
-    private EventBus mockEventBus;
-    @Captor
-    ArgumentCaptor<Team> teamArgumentCaptor;
-    @Captor
-    ArgumentCaptor<TeamCreatedEvent> teamCreatedEventArgumentCaptor;
+    TeamRepository mockTeamRepository = mock(TeamRepository.class);
+    PlayerMetadataRepository mockPlayerMetadataRepository = mock(PlayerMetadataRepository.class);
+    EventBus mockEventBus = mock(EventBus.class);
+    ArgumentCaptor<Team> teamArgumentCaptor = ArgumentCaptor.forClass(Team.class);
+    ArgumentCaptor<TeamCreatedEvent> teamCreatedEventArgumentCaptor = ArgumentCaptor.forClass(TeamCreatedEvent.class);
 
     @Test
-    public void itShouldStoreNewTeamWithSpecifiedName(){
+    public void itShouldStoreNewTeamWithSpecifiedName() {
         TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
 
         TeamResponse response = creator.createTeam("New team", new ArrayList<>());
@@ -49,7 +37,7 @@ public class TestTeamCreator {
     }
 
     @Test
-    public void itShouldPublishTeamCreatedEvent(){
+    public void itShouldPublishTeamCreatedEvent() {
         TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
 
         creator.createTeam("Test team", new ArrayList<>());
@@ -61,9 +49,9 @@ public class TestTeamCreator {
     }
 
     @Test
-    public void itShouldRaiseDuplicateIdentificationsError(){
+    public void itShouldRaiseDuplicateIdentificationsError() {
         TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
-        List<NewPlayer> newPlayers = new ArrayList<>(){{
+        List<NewPlayer> newPlayers = new ArrayList<>() {{
             add(new NewPlayer("12345", "john", 10, "john@mail.com"));
             add(new NewPlayer("12345", "cristiano", 7, "cr7@mail.com"));
         }};
@@ -73,10 +61,10 @@ public class TestTeamCreator {
     }
 
     @Test
-    public void itShouldNotDuplicatePlayersThatAlreadyExistWithSameIdentificationAndEmail(){
+    public void itShouldNotDuplicatePlayersThatAlreadyExistWithSameIdentificationAndEmail() {
         PlayerMetadata existentPlayerMetadata = new PlayerMetadata("john@mail.com", "1234", "john");
         TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
-        List<NewPlayer> newPlayers = new ArrayList<>(){{
+        List<NewPlayer> newPlayers = new ArrayList<>() {{
             add(new NewPlayer("1234", "john", 10, "john@mail.com"));
             add(new NewPlayer("1235", "cristiano", 7, "cr7@mail.com"));
         }};
@@ -89,9 +77,9 @@ public class TestTeamCreator {
     }
 
     @Test
-    public void itShouldCreateTeamPlayerInfoForEachNewPlayer(){
+    public void itShouldCreateTeamPlayerInfoForEachNewPlayer() {
         TeamCreator creator = new TeamCreator(mockTeamRepository, mockPlayerMetadataRepository, mockEventBus);
-        List<NewPlayer> newPlayers = new ArrayList<>(){{
+        List<NewPlayer> newPlayers = new ArrayList<>() {{
             add(new NewPlayer("12346", "john", 10, "john@mail.com"));
             add(new NewPlayer("12345", "cristiano", 7, "cr7@mail.com"));
         }};

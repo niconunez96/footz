@@ -5,11 +5,6 @@ import ftz.emailing.domain.EmailSender;
 import ftz.teams.domain.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import server.FtzApplication;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,17 +12,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 
-@SpringBootTest
-@ContextConfiguration(classes = FtzApplication.class)
 public class TestTeamCreationEmailNotificator {
 
-    @Mock
-    EmailSender emailSender;
-    @Mock
-    PlayerRepository playerRepository;
-    @Captor
-    ArgumentCaptor<List<EmailInfo>> emailInfosCaptor;
+    EmailSender emailSender = mock(EmailSender.class);
+    PlayerRepository playerRepository = mock(PlayerRepository.class);
+    ArgumentCaptor<List<EmailInfo>> emailInfosCaptor = ArgumentCaptor.forClass(List.class);
 
     public List<Player> threePlayersWithOneWithoutEmail() {
         Player player1 = new Player(
