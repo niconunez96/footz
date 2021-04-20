@@ -1,0 +1,14 @@
+on:
+  - pull_request
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    name: Running Java ${{ matrix.java }} tests
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Run tests
+        run: |
+          chmod +x gradlew
+          ./gradlew test
