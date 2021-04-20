@@ -1,0 +1,29 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    name: Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          chmod +x gradlew
+          ./gradlew jar
+      - name: Generate coverage report
+        run: |
+          chmod +x gradlew
+          ./gradlew test
+          ./gradlew check
+          ./gradlew codeCoverageReport
+      - name: Upload coverage report
+        if: success()
+        run: |
+          curl -s https://codecov.io/bash | bash
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        shell: bash
